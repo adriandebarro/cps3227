@@ -10,10 +10,11 @@ int main(void)
     StudentNode* currentStudent = CreateStudent(12,"John",4,4,GRADE_1);
     StudentNode* currentStudent_1 = CreateStudent(15,"Tom",3,4,GRADE_2);
     StudentNode* currentStudent_2 = CreateStudent(11,"Jane",4,4,GRADE_3);
-    StudentNode* currentStudent_3 = CreateStudent(10,"Jade",4,GRADE_1);
+    StudentNode* currentStudent_3 = CreateStudent(10,"Jade",4,4,GRADE_1);
 
     // Create a student collection
     StudentCollection* studentCollection = InitStudentCollection();
+
     printf("Initialised collection \n");
     printf("---------------------- \n");
     // Insert students in list
@@ -30,7 +31,7 @@ int main(void)
     PrettyPrint(studentCollection);
     printf("---------------------- \n");
     // Modify student at a specified list index
-    ModifyAtIndex(2,33,"Tom",2,GRADE_2,studentCollection);
+    ModifyAtIndex(2,33,"Ian",2,GRADE_2,studentCollection);
     PrettyPrint(studentCollection);
     printf("---------------------- \n");
     // Delete student at a specified list index
@@ -40,9 +41,13 @@ int main(void)
     DumpToFile(studentCollection);
     printf("List was dumped to file \n");
     printf("---------------------- \n");
-    // PopulateFromFile(studentCollection);
-    // printf("List populated from file \n");
-    // printf("---------------------- \n");
-    // PrettyPrint(studentCollection);
+    PopulateFromFile(studentCollection);
+    printf("List populated from file \n");
+    printf("---------------------- \n");
+    PrettyPrint(studentCollection);
+    printf("---------------------- \n");
+    // Delete all list
+    DeleteAll(studentCollection);  
+    PrettyPrint(studentCollection);
     return 0;
 }

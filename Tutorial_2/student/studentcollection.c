@@ -167,6 +167,23 @@ int DeleteAtIndex(int index,StudentCollection* coll)
         return 0;
 }
 
+void DeleteAll(StudentCollection* coll)
+{
+	StudentNode* currentStudent = coll->Head;
+	StudentNode* secondStudent = NULL;
+	
+	while(currentStudent != NULL)
+	{
+		secondStudent = currentStudent->Next;
+		free(currentStudent);
+		currentStudent = secondStudent;
+	}
+
+	coll->Total = 0;
+	coll->Head = NULL;
+
+}
+
 void PrettyPrint(StudentCollection* coll)
 {
     printf("Doubly linked list collection with a total of %d \n", coll->Total);
