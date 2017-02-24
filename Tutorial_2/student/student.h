@@ -22,7 +22,7 @@ struct StudentNode
 	StudentNode* Prev;
 };
 
-StudentNode* CreateStudent(int age, char* name, float grade, enum Level level);
+StudentNode* CreateStudent(int age, char* name, int nameSize , float grade, enum Level level);
 void UpdateStudent(StudentNode* currentStudent,int age, char* name, float grade, enum Level level);
 
 
