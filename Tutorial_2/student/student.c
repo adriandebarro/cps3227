@@ -5,12 +5,9 @@
 
 StudentNode* CreateStudent(int age, char* name, int size, float grade, enum Level level)
 {
-    printf("Creating student %s \n", name);
     StudentNode* tempStudent = malloc(sizeof(StudentNode));
-    printf("second step \n");
     tempStudent->Age = age;
     tempStudent->Name = malloc(sizeof(char)*size);
-    printf("%s \n", name);
     strcpy(tempStudent->Name, name);
     tempStudent->Grade = grade;
     tempStudent->StudentLevel = level;

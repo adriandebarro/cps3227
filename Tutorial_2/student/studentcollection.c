@@ -4,23 +4,27 @@
 
 #include "./studentcollection.h"
 
+// function for creating a student collection
 StudentCollection* InitStudentCollection()
 {
+    // allocates a space in the heap for the student collection
     StudentCollection* pCollection = malloc(sizeof(StudentCollection));
     pCollection->Head=NULL;
     pCollection->Total = 0;
     return  pCollection;
 }
 
-int Insert(StudentNode* currentStudent,StudentCollection* coll)
+// function that takes the student details and student collection as argument 
+int Insert(StudentNode* currentStudent, StudentCollection* coll)
 {
-    printf("Insert Student in collection \n");
+    // check if we already have an element in the list
     if (coll->Head==NULL)
     {
         coll->Head=currentStudent;
         coll->Total++;
         return 1;
     }
+    // if an element already exists, find the last element and appened the new element to the tail of the list
     else
     {
         StudentNode* tempStudent = coll->Head;
@@ -36,16 +40,29 @@ int Insert(StudentNode* currentStudent,StudentCollection* coll)
     }
 }
 
+// Doubly Linked List
+// ----------------
+
+//          head
+//           |
+//           |
+//  +------+-----+--+    +--+-----+--+       +-----+------+
+//  |      |     |o------>  |     |o------>  |     |      |
+//  | NULL |  1  |          |  2  |          |  3  | NULL |
+//  |      |     |  <------o|     |  <------o|     |      |
+//  +------+-----+--+    +--+-----+--+       +-----+------+
+//
+// https://github.com/freeCodeCamp/freeCodeCamp/wiki/Data-Structure-Linked-Lists
+
 int InsertAtIndex(StudentNode* currentStudent, int index, StudentCollection* coll)
 {
     int x = 0;
     StudentNode* prevStudent = NULL;
-
+    //check if the index argument is in range
     if ((index >= 0) && (index < coll->Total))
     {
-        printf("index -- %d --- %d", index, coll->Total);
         StudentNode* tempStudent = coll->Head;
-
+	// find the index entry point
         for (x = 0; x<index; x++)
         {
             if(tempStudent != NULL)
@@ -54,16 +71,18 @@ int InsertAtIndex(StudentNode* currentStudent, int index, StudentCollection* col
                 break;
 
         }
-
+	// set the current element as Previous node
         prevStudent = tempStudent->Prev;
         tempStudent->Prev = currentStudent;
         currentStudent->Next = tempStudent;
-
+	
+	// check if we are in the first node
         if(prevStudent != NULL)
         {
             prevStudent->Next = currentStudent;
             currentStudent->Prev = prevStudent;
         }
+	// if yes set the element as the head of the list
         else
         {
             coll->Head = currentStudent;
@@ -72,7 +91,7 @@ int InsertAtIndex(StudentNode* currentStudent, int index, StudentCollection* col
         return 1;
     }
     else
-        return 0;
+  	return 0;
 }
 
 
@@ -147,8 +166,6 @@ int DeleteAtIndex(int index,StudentCollection* coll)
     else
         return 0;
 }
-
-
 
 void PrettyPrint(StudentCollection* coll)
 {

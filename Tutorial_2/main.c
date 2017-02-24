@@ -3,28 +3,46 @@
 
 int main(void) 
 {
-    printf("Program Started!\n");
-    //StudentNode* currentStudent = CreateStudent(10,"john",4,4,GRADE_1);
-    //StudentNode* currentStudent1 = CreateStudent(10,"john1",5,4,GRADE_1);
-    //StudentNode* currentStudent2 = CreateStudent(10,"john2",5,4,GRADE_1);
-    // StudentNode* currentStudent3 = CreateStudent(10,"john3",4,GRADE_1);
+    printf("Program Started \n");
+    printf("---------------------- \n");
+
+    // Create four students
+    StudentNode* currentStudent = CreateStudent(12,"John",4,4,GRADE_1);
+    StudentNode* currentStudent_1 = CreateStudent(15,"Tom",3,4,GRADE_2);
+    StudentNode* currentStudent_2 = CreateStudent(11,"Jane",4,4,GRADE_3);
+    StudentNode* currentStudent_3 = CreateStudent(10,"Jade",4,GRADE_1);
+
+    // Create a student collection
     StudentCollection* studentCollection = InitStudentCollection();
     printf("Initialised collection \n");
-    //Insert(currentStudent,studentCollection);
-    //Insert(currentStudent1,studentCollection);
-    //Insert(currentStudent2,studentCollection);
+    printf("---------------------- \n");
+    // Insert students in list
+    Insert(currentStudent,studentCollection);
+    Insert(currentStudent_1,studentCollection);
+    Insert(currentStudent_2,studentCollection);
     printf("Inserted into collection \n");
-    // PrettyPrint(studentCollection);
-    // printf("------- \n");
-    // InsertAtIndex(currentStudent3,0,studentCollection);
-    // PrettyPrint(studentCollection);
-    // ModifyAtIndex(2,33,"Tom",2,GRADE_2,studentCollection);
-    // PrettyPrint(studentCollection);
-    // printf("------- \n");
-    // DeleteAtIndex(1,studentCollection);
-    // PrettyPrint(studentCollection);
-    //DumpToFile(studentCollection);
-    PopulateFromFile(studentCollection);
+    printf("---------------------- \n");
+    // Output the list to console
     PrettyPrint(studentCollection);
+    printf("---------------------- \n");
+    // Insert student at a specified list index
+    InsertAtIndex(currentStudent_3,0,studentCollection);
+    PrettyPrint(studentCollection);
+    printf("---------------------- \n");
+    // Modify student at a specified list index
+    ModifyAtIndex(2,33,"Tom",2,GRADE_2,studentCollection);
+    PrettyPrint(studentCollection);
+    printf("---------------------- \n");
+    // Delete student at a specified list index
+    DeleteAtIndex(1,studentCollection);
+    PrettyPrint(studentCollection);
+    printf("---------------------- \n");
+    DumpToFile(studentCollection);
+    printf("List was dumped to file \n");
+    printf("---------------------- \n");
+    // PopulateFromFile(studentCollection);
+    // printf("List populated from file \n");
+    // printf("---------------------- \n");
+    // PrettyPrint(studentCollection);
     return 0;
 }
