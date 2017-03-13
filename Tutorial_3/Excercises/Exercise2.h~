@@ -1,0 +1,14 @@
+#pragma once 
+
+#include "./Excercise.h"
+
+namespace OpenMPExcercises
+{
+	namespace Excercises
+	{
+		class Example2 : public Exercise
+		{
+
+		}
+	}
+}
