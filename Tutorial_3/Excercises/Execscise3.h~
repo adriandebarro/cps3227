@@ -30,14 +30,14 @@ namespace OpenMPExcercises
 
 				for (int index = 0; index < p_size; index++)
 				{
-					matrix[index] = new double[p_size];
+					matrix[index] = new double[p_size] {0};
 				}
 
 				for(int y = 0; y < p_size; y++)
 				{
 					for(int x = 0; x < p_size; x ++)
 					{
-						matrix[x][y] = 0;
+
 					}
 				}
 

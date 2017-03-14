@@ -1,8 +1,8 @@
 // OpenMPExcercises.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
 #include <iostream>
+
 #include "./Excercises/Excercise1.h"
 #include "./Excercises/Excercise2.h"
 #include "./Excercises/Execscise3.h"

@@ -1,7 +1,9 @@
 #pragma once 
-#include "../stdafx.h"
 
+#include <omp.h>
 #include <iostream>
+
+#include "../Common/Common.h"
 #include "./Excercise.h"
 
 namespace OpenMPExcercises
