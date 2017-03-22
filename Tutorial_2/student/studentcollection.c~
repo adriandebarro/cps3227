@@ -1,0 +1,181 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "./studentcollection.h"
+
+StudentCollection* InitStudentCollection()
+{
+    StudentCollection* pCollection = malloc(sizeof(StudentCollection));
+    pCollection->Head=NULL;
+    return  pCollection;
+}
+
+int Insert(StudentNode* currentStudent,StudentCollection* coll)
+{
+    if (coll->Head==NULL)
+    {
+        coll->Head=currentStudent;
+        coll->Total++;
+        return 1;
+    }
+    else
+    {
+        StudentNode* tempStudent = coll->Head;
+
+        while(tempStudent->Next != NULL)
+        {
+            tempStudent=tempStudent->Next;
+        }
+        tempStudent->Next=currentStudent;
+        currentStudent->Prev=tempStudent;
+        coll->Total++;
+        return 0;
+    }
+}
+
+int InsertAtIndex(StudentNode* currentStudent, int index, StudentCollection* coll)
+{
+    int x = 0;
+    StudentNode* prevStudent = NULL;
+    StudentNode* nextStudent = NULL;
+
+    if ((index >= 0) && (index <= coll->Total))
+    {
+        StudentNode* tempStudent = coll->Head;
+
+        //loop until you arrive at desired position
+        for (x = 0; x <= index; x++)
+        {
+            if(tempStudent != NULL)
+                tempStudent = tempStudent->Next;
+            else
+                break;
+
+        }
+
+        if(tempStudent != NULL)
+        {
+            //set the link for the previous node
+            if(tempStudent->Prev != NULL)
+            {
+                prevStudent->Next = currentStudent;
+                currentStudent->Prev = prevStudent;
+            }
+            else
+            {
+                coll->Head = currentStudent;
+            }
+            
+            //set the link for the next node    
+            tempStudent->Prev = currentStudent;
+            currentStudent->Next = tempStudent;
+            
+        }
+        else
+        {
+            coll->Head = currentStudent;
+        }
+        coll->Total++;
+        return 1;
+    }
+    else
+        return 0;
+}
+
+
+int ModifyAtIndex(int index, int age, char* name, float grade, enum Level level,StudentCollection* coll)
+{
+    StudentNode* tempStudent = NULL;
+    int x = 0;
+
+    if ((index >= 0) && (index <= coll->Total))
+    {
+        tempStudent = coll->Head;
+
+        for (x = 0; x <= index; x++)
+        {
+            if(tempStudent != NULL)
+                tempStudent = tempStudent->Next;
+            else
+                break;
+
+        }
+
+        UpdateStudent(tempStudent,age,name,grade,level);
+        return 1;
+    }
+    else
+        return 0;
+}
+
+int DeleteAtIndex(int index,StudentCollection* coll)
+{
+    StudentNode* tempStudent = coll->Head;
+    StudentNode* toDelete = NULL;
+    StudentNode* nextStudent = NULL;
+    StudentNode* prevStudent = NULL;
+
+    if ((index >= 0) && (index < coll->Total))
+    {
+        for (int x = 0; x <= index; x++)
+        {
+            if(tempStudent->Next == NULL)
+            {
+                return 0;
+            }
+            tempStudent = tempStudent->Next;
+        }
+
+        toDelete = tempStudent;
+        nextStudent = tempStudent->Next;
+        prevStudent = tempStudent->Prev;
+
+        if(prevStudent != NULL)
+        {
+            //if a center node, link to previous to the next node
+            prevStudent->Next = nextStudent;
+        }
+        else
+        {
+            //then node is the head node
+            coll->Head = tempStudent->Next;
+        }
+
+        if(nextStudent != NULL)
+        {
+            nextStudent ->Prev = prevStudent;
+        }
+
+        free(tempStudent);
+        return 1;
+    }
+    else
+        return 0;
+}
+
+
+
+void PrettyPrint(StudentCollection* coll)
+{
+    if(coll->Total == 0)
+    {
+        printf("Linked list is empty\n");
+        return;
+    }
+    else
+    {
+        StudentNode *tempStudent = coll->Head;
+       while(tempStudent != NULL) 
+       {
+            printf(" Student %s is %d years old and his current grade is %lf at level %d\n", tempStudent->Name, tempStudent->Age, tempStudent->Grade, tempStudent->StudentLevel);
+            tempStudent = tempStudent->Next;
+        }
+    }
+}
+
+
+
+//int DumpToFile(char* path,StudentCollection* coll);
+//int PopulateFromFile(char* path,StudentCollection* coll);
+
+

@@ -1,10 +1,12 @@
 #pragma once 
 
+#include "./Exercise.h"
+
 namespace 
 {
 	namespace
 	{
-		class Exercise5 : public Exercise
+		class Example4 : public Exercise
 		{
 			private:
 
