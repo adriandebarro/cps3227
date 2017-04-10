@@ -106,7 +106,7 @@ namespace OpenMPExcercises
 				double **matrixCParallel = nullptr;
 
 				omp_set_num_threads(10);
-				clock_t startingClock, endingClock;
+				double startingClock, endingClock;
 
 				matrixA = CreateMatrix(MATRIX_SIDE_SIZE);
 				matrixB = CreateMatrix(MATRIX_SIDE_SIZE);

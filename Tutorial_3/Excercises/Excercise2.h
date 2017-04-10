@@ -123,7 +123,7 @@ namespace OpenMPExcercises
 			virtual void ExecuteExcercise()
 			{
 				omp_set_num_threads(10);
-				clock_t startingClock, endingClock;
+				double startingClock, endingClock;
 
 				Common::TakeCurrentTime(startingClock);
 				NaiveTrapezoidal();

@@ -6,17 +6,15 @@ namespace OpenMPExcercises
 {
 	namespace Common
 	{
-		inline static void TakeCurrentTime(clock_t &p_clock)
+		inline static void TakeCurrentTime(double &p_clock)
 		{
-			p_clock = clock();
+			p_clock = omp_get_wtime();
 		}
 
-		double static ComputeTime(clock_t &p_startingTime, clock_t &p_endingTime)
+		double static ComputeTime(double &p_startingTime, double &p_endingTime)
 		{
 			double prol = 0;
-			clock_t timeTaken = p_endingTime - p_startingTime;
-			prol = timeTaken / (double) CLOCKS_PER_SEC;
-			return prol;
+			return  p_endingTime - p_startingTime;
 		}
 	}
 }
