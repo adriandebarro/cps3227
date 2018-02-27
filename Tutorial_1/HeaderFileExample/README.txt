@@ -1,1 +1,1 @@
-gcc .\HeaderFileExample.c StudentManager.c -o StudentExample.exe
+gcc .\HeaderFileExample.c StudentManager.c -o StudentExample
