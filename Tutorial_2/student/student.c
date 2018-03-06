@@ -1,25 +1,61 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "student.h"
 
-StudentNode* CreateStudent(int age, char* name, int size, float grade, enum Level level)
+StudentNode *CreateStudent(int age, char* name, float grade, Level level)
 {
-    StudentNode* tempStudent = malloc(sizeof(StudentNode));
-    tempStudent->Age = age;
-    tempStudent->Name = malloc(sizeof(char)*size);
-    strcpy(tempStudent->Name, name);
-    tempStudent->Grade = grade;
-    tempStudent->StudentLevel = level;
-    tempStudent->Next = NULL;
-    tempStudent->Prev = NULL;
-    return tempStudent;
+    assert(name);
+
+    StudentNode *newStudent = malloc(sizeof(StudentNode));
+    if (!newStudent)
+        return NULL;
+
+    newStudent->age = age;
+
+    newStudent->name = malloc(sizeof(char) * (strlen(name) + 1));
+    if (!newStudent->name)
+    {
+        free(newStudent);
+        return NULL;
+    }
+    strcpy(newStudent->name, name);
+
+    newStudent->grade = grade;
+    newStudent->level = level;
+    newStudent->next = NULL;
+    newStudent->prev = NULL;
+
+    return newStudent;
 }
 
-void UpdateStudent(StudentNode* currentStudent,int age, char* name, float grade, enum Level level)
+void DeleteStudent(StudentNode *student)
 {
-    currentStudent->Age = age;
-    strcpy(currentStudent->Name, name);
-    currentStudent->Grade = grade;
-    currentStudent->StudentLevel = level;
+    assert(student);
+
+    free(student->name);
+    free(student);
+}
+
+bool UpdateStudent(StudentNode *student, int age, char *name, float grade, Level level)
+{
+    assert(student);
+    assert(name);
+
+    int nameLen = (int)strlen(name);
+    if (strlen(student->name) != nameLen)
+    {
+        free(student->name);
+        student->name = malloc(sizeof(char) * (nameLen + 1));
+        if (!student->name)
+            return false;
+    }
+
+    student->age = age;
+    strcpy(student->name, name);
+    student->grade = grade;
+    student->level = level;
+
+    return true;
 }

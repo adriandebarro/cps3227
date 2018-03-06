@@ -1,41 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "studentcollection.h"
 
-#include "./studentcollection.h"
+#define FILE_NAME "students.lst"
 
 // function for creating a student collection
-StudentCollection* InitStudentCollection()
+StudentCollection *InitStudentCollection()
 {
     // allocates a space in the heap for the student collection
-    StudentCollection* pCollection = malloc(sizeof(StudentCollection));
-    pCollection->Head=NULL;
-    pCollection->Total = 0;
-    return  pCollection;
+    StudentCollection *pCollection = malloc(sizeof(StudentCollection));
+    if (!pCollection)
+        return NULL;
+
+    pCollection->head = NULL;
+    pCollection->total = 0;
+
+    return pCollection;
 }
 
-// function that takes the student details and student collection as argument 
-int Insert(StudentNode* currentStudent, StudentCollection* coll)
+// function that takes the student details and student collection as argument
+int Insert(StudentNode *currentStudent, StudentCollection *coll)
 {
     // check if we already have an element in the list
-    if (coll->Head==NULL)
+    if (!coll->head)
     {
-        coll->Head=currentStudent;
-        coll->Total++;
+        coll->head = currentStudent;
+        coll->total++;
         return 1;
     }
-    // if an element already exists, find the last element and appened the new element to the tail of the list
     else
     {
-        StudentNode* tempStudent = coll->Head;
+        // if an element already exists, find the last element and append the new element to the tail of the list
 
-        while(tempStudent->Next != NULL)
-        {
-            tempStudent=tempStudent->Next;
-        }
-        tempStudent->Next=currentStudent;
-        currentStudent->Prev=tempStudent;
-        coll->Total++;
+        StudentNode *tempStudent = coll->head;
+
+        while(tempStudent->next != NULL)
+            tempStudent = tempStudent->next;
+        tempStudent->next = currentStudent;
+        currentStudent->prev = tempStudent;
+        coll->total++;
         return 0;
     }
 }
@@ -54,192 +58,192 @@ int Insert(StudentNode* currentStudent, StudentCollection* coll)
 //
 // https://github.com/freeCodeCamp/freeCodeCamp/wiki/Data-Structure-Linked-Lists
 
-int InsertAtIndex(StudentNode* currentStudent, int index, StudentCollection* coll)
+int InsertAtIndex(StudentNode *currentStudent, int index, StudentCollection *coll)
 {
-    int x = 0;
-    StudentNode* prevStudent = NULL;
+    StudentNode *prevStudent = NULL;
+
     //check if the index argument is in range
-    if ((index >= 0) && (index < coll->Total))
+    if (index >= 0 && index < coll->total)
     {
-        StudentNode* tempStudent = coll->Head;
-	// find the index entry point
-        for (x = 0; x<index; x++)
+        StudentNode *tempStudent = coll->head;
+        // find the index entry point
+        for (int i = 0; i < index; i++)
         {
-            if(tempStudent != NULL)
-                tempStudent = tempStudent->Next;
+            if (tempStudent)
+                tempStudent = tempStudent->next;
             else
                 break;
+        }
 
-        }
-	// set the current element as Previous node
-        prevStudent = tempStudent->Prev;
-        tempStudent->Prev = currentStudent;
-        currentStudent->Next = tempStudent;
-	
-	// check if we are in the first node
-        if(prevStudent != NULL)
+        // set the current element as Previous node
+        prevStudent = tempStudent->prev;
+        tempStudent->prev = currentStudent;
+        currentStudent->next = tempStudent;
+
+        // check if we are in the first node
+        if (prevStudent)
         {
-            prevStudent->Next = currentStudent;
-            currentStudent->Prev = prevStudent;
+            prevStudent->next = currentStudent;
+            currentStudent->prev = prevStudent;
         }
-	// if yes set the element as the head of the list
         else
         {
-            coll->Head = currentStudent;
+            // if yes set the element as the head of the list
+            coll->head = currentStudent;
         }
-        coll->Total++;
+        coll->total++;
         return 1;
     }
     else
-  	return 0;
+    {
+  	    return 0;
+    }
 }
 
-
-int ModifyAtIndex(int index, int age, char* name, float grade, enum Level level,StudentCollection* coll)
+int ModifyAtIndex(int index, int age, char *name, float grade, Level level, StudentCollection *coll)
 {
-    StudentNode* tempStudent = NULL;
-    int x = 0;
+    StudentNode *tempStudent = NULL;
 
-    if ((index >= 0) && (index <= coll->Total))
+    if (index >= 0 && index <= coll->total)
     {
-        tempStudent = coll->Head;
+        tempStudent = coll->head;
 
-        for (x = 0; x <= index - 1; x++)
+        for (int i = 0; i <= index - 1; i++)
         {
-            if(tempStudent != NULL)
-                tempStudent = tempStudent->Next;
+            if (tempStudent)
+                tempStudent = tempStudent->next;
             else
                 break;
-
         }
 
-        UpdateStudent(tempStudent,age,name,grade,level);
+        UpdateStudent(tempStudent, age, name, grade, level);
         return 1;
     }
     else
+    {
         return 0;
+    }
 }
 
-int DeleteAtIndex(int index,StudentCollection* coll)
+int DeleteAtIndex(int index, StudentCollection *coll)
 {
-    StudentNode* tempStudent = coll->Head;
-    StudentNode* toDelete = NULL;
+    StudentNode* tempStudent = coll->head;
     StudentNode* nextStudent = NULL;
     StudentNode* prevStudent = NULL;
-    int x = 0;
 
-    if ((index >= 0) && (index < coll->Total))
+    if (index >= 0 && index < coll->total)
     {
-        for (x = 0; x <= index - 1; x++)
+        for (int i = 0; i <= index - 1; i++)
         {
-            if(tempStudent->Next == NULL)
-            {
+            if (!tempStudent->next)
                 return 0;
-            }
-            tempStudent = tempStudent->Next;
+            tempStudent = tempStudent->next;
         }
 
-        toDelete = tempStudent;
-        nextStudent = tempStudent->Next;
-        prevStudent = tempStudent->Prev;
+        nextStudent = tempStudent->next;
+        prevStudent = tempStudent->prev;
 
-        if(prevStudent != NULL)
+        if (prevStudent)
         {
-            //if a center node, link to previous to the next node
-            prevStudent->Next = nextStudent;
+            // if a center node, link to previous to the next node
+            prevStudent->next = nextStudent;
         }
         else
         {
-            //then node is the head node
-            coll->Head = tempStudent->Next;
+            // then node is the head node
+            coll->head = tempStudent->next;
         }
 
-        if(nextStudent != NULL)
-        {
-            nextStudent ->Prev = prevStudent;
-        }
+        if (nextStudent)
+            nextStudent->prev = prevStudent;
 
-        free(tempStudent);
-        coll->Total -= 1;
+        DeleteStudent(tempStudent);
+        coll->total -= 1;
         return 1;
     }
     else
+    {
         return 0;
+    }
 }
 
-void DeleteAll(StudentCollection* coll)
+void DeleteAll(StudentCollection *coll)
 {
-	StudentNode* currentStudent = coll->Head;
-	StudentNode* secondStudent = NULL;
+	StudentNode *currentStudent = coll->head;
+	StudentNode *nextStudent = NULL;
 	
-	while(currentStudent != NULL)
+	while(currentStudent)
 	{
-		secondStudent = currentStudent->Next;
-		free(currentStudent);
-		currentStudent = secondStudent;
+        nextStudent = currentStudent->next;
+		DeleteStudent(currentStudent);
+		currentStudent = nextStudent;
 	}
 
-	coll->Total = 0;
-	coll->Head = NULL;
+	coll->total = 0;
+	coll->head = NULL;
 
 }
 
-void PrettyPrint(StudentCollection* coll)
+void PrettyPrint(StudentCollection *coll)
 {
-    printf("Doubly linked list collection with a total of %d \n", coll->Total);
+    printf("Doubly linked list collection with a total of %d\n", coll->total);
 
-    if(coll->Total == 0)
+    if (coll->total == 0)
     {
         printf("Linked list is empty\n");
         return;
     }
     else
     {
-        StudentNode *tempStudent = coll->Head;
-       while(tempStudent != NULL) 
-       {
-            printf(" Student %s is %d years old and his current grade is %lf at level %d\n", tempStudent->Name, tempStudent->Age, tempStudent->Grade, tempStudent->StudentLevel);
-            tempStudent = tempStudent->Next;
+        StudentNode *tempStudent = coll->head;
+        while(tempStudent)
+        {
+            printf(" Student %s is %d years old and his current grade is %.2f at level %d\n", tempStudent->name,
+                tempStudent->age, tempStudent->grade, tempStudent->level);
+            tempStudent = tempStudent->next;
         }
     }
 }
 
-int DumpToFile(StudentCollection* coll)
+int DumpToFile(StudentCollection *coll)
 {
-    StudentNode* currentStudent = coll->Head;
-    FILE* fp = fopen("DUMPFILE.txt", "w");
+    StudentNode *currentStudent = coll->head;
+    FILE *fp = fopen(FILE_NAME, "w");
 
     //check that file was opened successfully
-    if(fp != NULL)
+    if (fp)
     {
-        while(currentStudent != NULL)
+        while(currentStudent)
         {
-            fprintf(fp, "%d,%s,%lf,%d \n", currentStudent->Age,  currentStudent->Name, currentStudent->Grade, currentStudent->StudentLevel);
-            currentStudent = currentStudent->Next;
+            fprintf(fp, "%d,%s,%lf,%d \n", currentStudent->age,  currentStudent->name, currentStudent->grade,
+                currentStudent->level);
+            currentStudent = currentStudent->next;
         }
     }
+
+    return 0;
 }
 
-int GetLine(FILE* fp, char* buffer)
+int GetLine(FILE *fp, char *buffer)
 {
-    char currentChar = '-';
+    char currentChar;
     int bufferIndex = 0;
 
     while((currentChar = (char)fgetc(fp)) != '\n')
     {
         if(currentChar == EOF)
-        {
             return 1;
-        }
         buffer[bufferIndex] = currentChar;
         bufferIndex++;
     }
+
     return 0;
 }
 
-void GetStudentDetails(int* age, char* name, int* grade, enum Level* level, char* line)
+void GetStudentDetails(int *age, char *name, int *grade, Level *level, char *line)
 {
-    char* token = "";
+    char *token;
+
     token = strtok(line, ",");
     *age = atoi(token);
     token = strtok(NULL, ",");
@@ -250,21 +254,25 @@ void GetStudentDetails(int* age, char* name, int* grade, enum Level* level, char
     *level = atoi(token);
 }
 
-int PopulateFromFile(StudentCollection* coll)
+int PopulateFromFile(StudentCollection *coll)
 {
-    FILE* fp = fopen("DUMPFILE.txt", "r");
     char buffer[1024];
     char tempName[200];
     int age = 0;
-    enum Level level;
+    Level level;
     int grade = 0;
-    StudentNode* newStudent = NULL;
+    StudentNode *newStudent = NULL;
+    FILE *fp = fopen(FILE_NAME, "r");
 
-    while(GetLine(fp, &buffer[0]) != 1)
+    if (fp)
     {
-        GetStudentDetails(&age, &tempName[0], &grade, &level, &buffer[0]);
-        newStudent = CreateStudent(age, tempName, 200, grade, level); 
-        Insert(newStudent, coll);
+        while (GetLine(fp, &buffer[0]) != 1)
+        {
+            GetStudentDetails(&age, &tempName[0], &grade, &level, &buffer[0]);
+            newStudent = CreateStudent(age, tempName, grade, level);
+            Insert(newStudent, coll);
+        }
     }
-}
 
+    return 0;
+}
