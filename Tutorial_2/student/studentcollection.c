@@ -10,7 +10,7 @@ StudentCollection *InitStudentCollection()
 {
     // allocates a space in the heap for the student collection
     StudentCollection *pCollection = malloc(sizeof(StudentCollection));
-    if (!pCollection)
+    if (!pCollection) // equivalent to if (pCollection == NULL)
         return NULL;
 
     pCollection->head = NULL;
@@ -20,14 +20,12 @@ StudentCollection *InitStudentCollection()
 }
 
 // function that takes the student details and student collection as argument
-int Insert(StudentNode *currentStudent, StudentCollection *coll)
+void Insert(StudentNode *currentStudent, StudentCollection *coll)
 {
     // check if we already have an element in the list
     if (!coll->head)
     {
         coll->head = currentStudent;
-        coll->total++;
-        return 1;
     }
     else
     {
@@ -35,13 +33,14 @@ int Insert(StudentNode *currentStudent, StudentCollection *coll)
 
         StudentNode *tempStudent = coll->head;
 
-        while(tempStudent->next != NULL)
+        while(tempStudent->next) // equivalent to while(tempStudent->next != NULL)
             tempStudent = tempStudent->next;
+
         tempStudent->next = currentStudent;
         currentStudent->prev = tempStudent;
-        coll->total++;
-        return 0;
     }
+
+    coll->total++;
 }
 
 // Doubly Linked List
@@ -58,24 +57,19 @@ int Insert(StudentNode *currentStudent, StudentCollection *coll)
 //
 // https://github.com/freeCodeCamp/freeCodeCamp/wiki/Data-Structure-Linked-Lists
 
-int InsertAtIndex(StudentNode *currentStudent, int index, StudentCollection *coll)
+bool InsertAtIndex(StudentNode *currentStudent, int index, StudentCollection *coll)
 {
     StudentNode *prevStudent = NULL;
 
-    //check if the index argument is in range
+    // check if the index argument is in range
     if (index >= 0 && index < coll->total)
     {
         StudentNode *tempStudent = coll->head;
         // find the index entry point
         for (int i = 0; i < index; i++)
-        {
-            if (tempStudent)
-                tempStudent = tempStudent->next;
-            else
-                break;
-        }
+            tempStudent = tempStudent->next;
 
-        // set the current element as Previous node
+        // set the current element as previous node
         prevStudent = tempStudent->prev;
         tempStudent->prev = currentStudent;
         currentStudent->next = tempStudent;
@@ -92,65 +86,56 @@ int InsertAtIndex(StudentNode *currentStudent, int index, StudentCollection *col
             coll->head = currentStudent;
         }
         coll->total++;
-        return 1;
+        return true;
     }
     else
     {
-  	    return 0;
+        return false;
     }
 }
 
-int ModifyAtIndex(int index, int age, char *name, float grade, Level level, StudentCollection *coll)
+bool ModifyAtIndex(int index, int age, char *name, float grade, Level level, StudentCollection *coll)
 {
     StudentNode *tempStudent = NULL;
 
-    if (index >= 0 && index <= coll->total)
+    if (index >= 0 && index < coll->total)
     {
         tempStudent = coll->head;
 
-        for (int i = 0; i <= index - 1; i++)
-        {
-            if (tempStudent)
-                tempStudent = tempStudent->next;
-            else
-                break;
-        }
+        for (int i = 0; i < index; i++)
+            tempStudent = tempStudent->next;
 
         UpdateStudent(tempStudent, age, name, grade, level);
-        return 1;
+        return true;
     }
     else
     {
-        return 0;
+        return false;
     }
 }
 
-int DeleteAtIndex(int index, StudentCollection *coll)
+bool DeleteAtIndex(int index, StudentCollection *coll)
 {
-    StudentNode* tempStudent = coll->head;
-    StudentNode* nextStudent = NULL;
-    StudentNode* prevStudent = NULL;
+    StudentNode *tempStudent = coll->head;
+    StudentNode *nextStudent = NULL;
+    StudentNode *prevStudent = NULL;
 
     if (index >= 0 && index < coll->total)
     {
-        for (int i = 0; i <= index - 1; i++)
-        {
-            if (!tempStudent->next)
-                return 0;
+        for (int i = 0; i < index; i++)
             tempStudent = tempStudent->next;
-        }
 
         nextStudent = tempStudent->next;
         prevStudent = tempStudent->prev;
 
         if (prevStudent)
         {
-            // if a center node, link to previous to the next node
+            // if a centre node, link to previous to the next node
             prevStudent->next = nextStudent;
         }
         else
         {
-            // then node is the head node
+            // the node is the head node
             coll->head = tempStudent->next;
         }
 
@@ -159,11 +144,11 @@ int DeleteAtIndex(int index, StudentCollection *coll)
 
         DeleteStudent(tempStudent);
         coll->total -= 1;
-        return 1;
+        return true;
     }
     else
     {
-        return 0;
+        return false;
     }
 }
 
@@ -215,10 +200,12 @@ int DumpToFile(StudentCollection *coll)
     {
         while(currentStudent)
         {
-            fprintf(fp, "%d,%s,%lf,%d \n", currentStudent->age,  currentStudent->name, currentStudent->grade,
+            fprintf(fp, "%d,%s,%.2f,%d \n", currentStudent->age,  currentStudent->name, currentStudent->grade,
                 currentStudent->level);
             currentStudent = currentStudent->next;
         }
+
+        fclose(fp);
     }
 
     return 0;
@@ -251,7 +238,7 @@ void GetStudentDetails(int *age, char *name, int *grade, Level *level, char *lin
     token = strtok(NULL, ",");
     *grade = atoi(token);
     token = strtok(NULL, ",");
-    *level = atoi(token);
+    *level = (Level)atoi(token);
 }
 
 int PopulateFromFile(StudentCollection *coll)

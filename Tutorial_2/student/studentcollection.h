@@ -11,12 +11,12 @@ typedef struct StudentCollection
 
 StudentCollection *InitStudentCollection();
 
-int Insert(StudentNode *currentStudent, StudentCollection *coll);
-int InsertAtIndex(StudentNode *currentStudent, int index, StudentCollection *coll);
+void Insert(StudentNode *currentStudent, StudentCollection *coll);
+bool InsertAtIndex(StudentNode *currentStudent, int index, StudentCollection *coll);
 
-int ModifyAtIndex(int index, int age, char* name, float grade, Level level, StudentCollection *coll);
+bool ModifyAtIndex(int index, int age, char* name, float grade, Level level, StudentCollection *coll);
 
-int DeleteAtIndex(int index, StudentCollection *coll);
+bool DeleteAtIndex(int index, StudentCollection *coll);
 void DeleteAll(StudentCollection *coll);
 
 void PrettyPrint(StudentCollection *coll);
